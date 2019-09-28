@@ -5,6 +5,7 @@ Created on Thu Sep 26 12:10:16 2019
 @author: avsirotkin
 """
 import datetime
+import time
 import dateparser
 import re
 import requests
@@ -66,7 +67,7 @@ def make_announcement(message):
     bot.send_message(message.from_user.id, my_message, disable_web_page_preview = True, parse_mode="HTML")
 
 
-bot.polling(none_stop=True, interval=0)
+#bot.polling(none_stop=True, interval=0)
 
 
  # Обработчик для документов и аудиофайлов
@@ -74,9 +75,10 @@ bot.polling(none_stop=True, interval=0)
 def handle_document_audio(message):
     pass
 
-#while(1):
-#    try:
-bot.polling(none_stop=True, interval=0, timeout=10)
-print("Бываю ли я тут")
-#    except:
-#        print("Что-то пошло не так.")
+while(1):
+    try:
+        bot.polling(none_stop=True, interval=0, timeout=10)
+        print("Бываю ли я тут")
+    except:
+        print("Что-то пошло не так.")
+        time.sleep(5)
