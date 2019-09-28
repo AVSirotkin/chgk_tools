@@ -49,11 +49,19 @@ def make_announcement(message):
     
     info = message.text.strip().split()
     
+    str_to_remove = 0
+    extra_info = ""
+    
     if len(info)>1:
-        my_message = get_announcement(info[1])
-    else:
-        my_message = get_announcement("https://chgk-spb.livejournal.com/2046721.html")
+        if info[1].isdigit() == True:
+            str_to_remove = int(info[1])
+            if len(info)>1:
+                extra_info = " ".join(info[2:])
+        else:
+            extra_info = " ".join(info[1:])
+#    else:
 #        my_message = "Не указана ссылка на пост"
+    my_message = get_announcement(str_to_remove, extra_info,  "https://chgk-spb.livejournal.com/2046721.html")
     print(my_message)
     bot.send_message(message.from_user.id, my_message, disable_web_page_preview = True, parse_mode="HTML")
 
