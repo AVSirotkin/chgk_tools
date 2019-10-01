@@ -13,6 +13,9 @@ import telebot
 import json
 from telebot import apihelper
 from announce import *
+import logging
+
+
 
 token=open("CTB_token.txt", "rt").read()
 
@@ -33,20 +36,23 @@ else:
 bot = telebot.TeleBot(token)
 
 
+#Logger
+logger = telebot.logger
+telebot.logger.setLevel(logging.DEBUG)
+
+
 command_list = ''''announce', 'объява', 'объявление', 'анонс': обработать пост ЖЖ с анонсами'''
 
 
 @bot.message_handler(commands=['start', 'help'])
 def handle_start_help(message):
-    print("\n\n Command Message:\n")
-    print(message)
+    logger.info("Received start/help message: "+str(message))
 #    bot.send_message(message.from_user.id, "Привет! Я бот который научится помогать тебе искать команду или игроков для ЧГК.\nКогда я вырасту, тут будет список команд и много других полезных штук.")
     bot.send_message(message.from_user.id, "Привет! Вот основной список команд:\n"+command_list)
 
 @bot.message_handler(commands=['announce', 'объява', 'объявление', 'анонс'])
 def make_announcement(message):
-    print("\n\n Command Message legs:\n")
-    print(message)
+    logger.info("Received announce message: "+str(message))
     
     info = message.text.strip().split()
     
@@ -63,7 +69,8 @@ def make_announcement(message):
 #    else:
 #        my_message = "Не указана ссылка на пост"
     my_message = get_announcement(str_to_remove, extra_info,  "https://chgk-spb.livejournal.com/2046721.html")
-    print(my_message)
+    logger.info("Result announce: \n"+str(message))
+#    print(my_message)
     bot.send_message(message.from_user.id, my_message, disable_web_page_preview = True, parse_mode="HTML")
 
 
@@ -78,7 +85,6 @@ def handle_document_audio(message):
 while(1):
     try:
         bot.polling(none_stop=True, interval=0, timeout=10)
-        print("Бываю ли я тут")
     except:
-        print("Что-то пошло не так.")
+        logger.exception(sys.exc_info()[0])
         time.sleep(5)
