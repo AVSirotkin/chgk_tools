@@ -51,7 +51,7 @@ def get_announcement(strings_to_remove = 0, extra_message = "", ljurl = "https:/
         if extra_message != "":
             extra_message = extra_message + "\n"
 
-        announce = "Продолжаем вести список синхронов в Санкт-Петербурге. Пост обновлён "+str(datetime.date.today())+".\n\n" + extra_message + announce   
+        announce = "Продолжаем вести список синхронов в Санкт-Петербурге. Пост обновлён "+datetime.date.today().strftime("%d.%m.%Y")+".\n\n" + extra_message + announce   
 
     return(announce)
     
