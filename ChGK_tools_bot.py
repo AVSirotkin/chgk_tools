@@ -4,6 +4,7 @@ Created on Thu Sep 26 12:10:16 2019
 
 @author: avsirotkin
 """
+import sys
 import datetime
 import time
 import dateparser
