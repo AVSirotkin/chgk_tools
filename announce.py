@@ -21,7 +21,7 @@ def get_announcement(strings_to_remove = 0, extra_message = "", ljurl = "https:/
         announce = re.sub("</article.*?>", "", announce)
         announce = re.sub("<div.*", "", announce)
         announce = re.sub("<p>", "", announce)
-        announce = re.sub("</p>", "", announce)
+        announce = re.sub("</p>", "\n\n", announce)
         announce = re.sub("<br.*?>", "\n", announce)   
 
 
