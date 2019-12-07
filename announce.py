@@ -11,7 +11,7 @@ import dateparser
 
 
 
-def get_announcement(strings_to_remove = 0, extra_message = "", ljurl = "https://chgk-spb.livejournal.com/2046721.html"):
+def get_announcement(strings_to_remove = 0, extra_message = "", hashtag_filter = "", ljurl = "https://chgk-spb.livejournal.com/2046721.html"):
     resp = requests.get(ljurl)
     announce = "Sorry"
     if resp.ok:
@@ -32,8 +32,9 @@ def get_announcement(strings_to_remove = 0, extra_message = "", ljurl = "https:/
         #clear old infos 
         announce_strings_cleared = []
         too_old = False
+        data_to_print = ""
         for s in announce_strings:
-            
+            date_string = None
             if len(s) > 7:
                 date_string = dateparser.parse(s[3:-4], languages = ["ru"])
             else:
@@ -43,8 +44,29 @@ def get_announcement(strings_to_remove = 0, extra_message = "", ljurl = "https:/
                     too_old = True
                 else:
                     too_old = False
-            if not too_old:
-                announce_strings_cleared.append(s)        
+                    data_to_print = s
+            else:    
+                if not too_old:
+                    if hashtag_filter == "none": 
+                        if (not "#" in s) and (len(s) > 3):
+                            if data_to_print:
+                                announce_strings_cleared.append("\n"+data_to_print)
+                                data_to_print = ""
+                            announce_strings_cleared.append(s)
+                    elif hashtag_filter == "all":
+                        if "#" in s:
+                            if data_to_print:
+                                announce_strings_cleared.append(data_to_print)
+                                data_to_print = ""
+                            announce_strings_cleared.append(s)
+                    else:
+                        if hashtag_filter in s:
+                            if data_to_print:
+                                announce_strings_cleared.append(data_to_print)
+                                data_to_print = ""
+                            announce_strings_cleared.append(s)
+                        
+                    
         
         announce =  "\n".join(announce_strings_cleared)               
         
@@ -72,5 +94,5 @@ def get_announcement(strings_to_remove = 0, extra_message = "", ljurl = "https:/
 #ljurl = "https://chgk-spb.livejournal.com/2046721.html"
 #resp
 #announce
-get_announcement()
+print(get_announcement(hashtag_filter = "none"))
 #dateparser.parse("27 сентября (пт)", languages = ["ru"])

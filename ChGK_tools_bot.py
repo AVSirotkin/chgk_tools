@@ -54,9 +54,17 @@ def handle_start_help(message):
 @bot.message_handler(commands=['announce', 'объява', 'объявление', 'анонс'])
 def make_announcement(message):
     logger.info("Received announce message: "+str(message))
-    
+
+
     info = message.text.strip().split()
-    
+    fltr = ""
+    print((message.text.strip()[:3]))
+    if len(info) > 1:
+        if info[1][:3] == "f=\"":
+            f_info  = message.text.strip().split("\"")
+            if len(f_info)>1:
+                fltr = f_info[1] 
+                info = message.text.strip().replace(" f=\""+fltr+"\"", "",).split()
     str_to_remove = 0
     extra_info = ""
     
@@ -69,7 +77,7 @@ def make_announcement(message):
             extra_info = " ".join(info[1:])
 #    else:
 #        my_message = "Не указана ссылка на пост"
-    my_message = get_announcement(str_to_remove, extra_info,  "https://chgk-spb.livejournal.com/2046721.html")
+    my_message = get_announcement(str_to_remove, extra_info, fltr, "https://chgk-spb.livejournal.com/2046721.html")
     logger.info("Result announce: \n"+str(message))
 #    print(my_message)
     bot.send_message(message.from_user.id, my_message, disable_web_page_preview = True, parse_mode="HTML")
