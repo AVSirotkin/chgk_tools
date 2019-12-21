@@ -40,6 +40,12 @@ def get_announcement(strings_to_remove = 0, extra_message = "", hashtag_filter =
             else:
                 date_string = None
             if date_string:
+#                print(date_string)
+                if datetime.date.today().month == 12: #year shift hot fix
+                    if date_string.date().month == 1:
+#                        print(type(date_string))
+                        date_string = datetime.datetime(datetime.date.today().year + 1, date_string.month, date_string.day)
+ #                       print(date_string)
                 if date_string.date() < datetime.date.today():
                     too_old = True
                 else:
